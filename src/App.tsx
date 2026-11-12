@@ -9,7 +9,7 @@ import AboutScene from './components/scenes/AboutScene'
 import StarringScene from './components/scenes/StarringScene'
 import EducationScene from './components/scenes/EducationScene'
 import SkillsTitleScene from './components/scenes/SkillsTitleScene'
-import SkillsScene from './components/scenes/SkillsScene'
+import TechStackScene from './components/scenes/TechStackScene'
 import WorkTitleScene from './components/scenes/WorkTitleScene'
 import ProjectsScene from './components/scenes/ProjectsScene'
 import AchievementsScene from './components/scenes/AchievementsScene'
@@ -81,7 +81,7 @@ function App() {
       <StarringScene progress={filmProgress} />
       <EducationScene progress={filmProgress} />
       <SkillsTitleScene progress={filmProgress} />
-      <SkillsScene progress={filmProgress} isMobile={isMobile} />
+      <TechStackScene progress={filmProgress} isMobile={isMobile} />
       <WorkTitleScene progress={filmProgress} />
       <ProjectsScene progress={filmProgress} isMobile={isMobile} />
       <AchievementsScene progress={filmProgress} />

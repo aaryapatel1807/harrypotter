@@ -41,11 +41,11 @@ const AboutScene = ({ progress }: AboutSceneProps) => {
                 fontFamily: 'Cinzel Decorative, serif',
                 fontSize: 'clamp(2rem, 5vw, 3rem)',
                 color: '#d4a84b',
-                marginBottom: '1.5rem',
+                marginBottom: '0.5rem',
                 textShadow: '0 0 20px rgba(212, 168, 75, 0.4)',
               }}
             >
-              Year One
+              Chapter I · The Student
             </motion.div>
             <motion.div
               initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}

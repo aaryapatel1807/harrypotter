@@ -41,8 +41,22 @@ const EducationScene = ({ progress }: EducationSceneProps) => {
                 fontFamily: 'Cinzel Decorative, serif',
                 fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
                 color: '#d4a84b',
-                marginBottom: '1.5rem',
+                marginBottom: '0.5rem',
                 textShadow: '0 0 20px rgba(212, 168, 75, 0.4)',
+              }}
+            >
+              Chapter II · The Classroom
+            </motion.div>
+            <motion.div
+              initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
+              animate={{ filter: 'blur(0px)', y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+              style={{
+                fontFamily: 'Cinzel, serif',
+                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+                color: '#f6e3a8',
+                marginBottom: '1.5rem',
+                letterSpacing: '0.05em',
               }}
             >
               Education

@@ -35,11 +35,11 @@ const ContactScene = ({ progress }: ContactSceneProps) => {
               fontFamily: 'Cinzel Decorative, serif',
               fontSize: 'clamp(2rem, 6vw, 4rem)',
               color: '#d4a84b',
-              marginBottom: '1rem',
+              marginBottom: '0.5rem',
               textShadow: '0 0 40px rgba(212, 168, 75, 0.6)',
             }}
           >
-            Epilogue
+            Epilogue · Send an Owl
           </motion.div>
           <motion.div
             initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
@@ -47,7 +47,7 @@ const ContactScene = ({ progress }: ContactSceneProps) => {
             transition={{ duration: 0.8, delay: 0.15 }}
             style={{
               fontFamily: 'Cinzel, serif',
-              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
               color: '#f6e3a8',
               marginBottom: '1rem',
               letterSpacing: '0.05em',
@@ -55,19 +55,20 @@ const ContactScene = ({ progress }: ContactSceneProps) => {
           >
             Contact Me
           </motion.div>
-          <motion.div
-            initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
-            animate={{ filter: 'blur(0px)', y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            style={{
-              fontFamily: 'EB Garamond, serif',
-              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-              color: '#efe2c0',
-              marginBottom: '2rem',
-            }}
-          >
-            {portfolio.contact.message}
-          </motion.div>
+            <motion.div
+              initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
+              animate={{ filter: 'blur(0px)', y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              style={{
+                fontFamily: 'EB Garamond, serif',
+                fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                color: 'rgba(239, 226, 192, 0.8)',
+                marginBottom: '2rem',
+                fontStyle: 'italic',
+              }}
+            >
+              {portfolio.contact.message}
+            </motion.div>
           <motion.a
             href={`mailto:${portfolio.contact.email}`}
             initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
@@ -95,7 +96,7 @@ const ContactScene = ({ progress }: ContactSceneProps) => {
               justifyContent: 'center',
               gap: '1rem',
               flexWrap: 'wrap',
-              marginBottom: '2rem',
+              marginBottom: '2.5rem',
             }}
           >
             {[

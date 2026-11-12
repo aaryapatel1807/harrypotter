@@ -39,21 +39,21 @@ const ExperienceScene = ({ progress }: ExperienceSceneProps) => {
               transition={{ duration: 0.6 }}
               style={{
                 fontFamily: 'Cinzel Decorative, serif',
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
+                fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
                 color: '#d4a84b',
                 marginBottom: '0.5rem',
                 textShadow: '0 0 20px rgba(212, 168, 75, 0.4)',
               }}
             >
-              Year Five
+              Chapter VI · The Journey
             </motion.div>
             <motion.div
               initial={{ filter: 'blur(16px)', y: 20, scale: 0.97 }}
               animate={{ filter: 'blur(0px)', y: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               style={{
-                fontFamily: 'Cinzel Decorative, serif',
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                fontFamily: 'Cinzel, serif',
+                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
                 color: '#f6e3a8',
                 marginBottom: '1.5rem',
                 textShadow: '0 0 20px rgba(246, 227, 168, 0.4)',
@@ -69,13 +69,13 @@ const ExperienceScene = ({ progress }: ExperienceSceneProps) => {
                 fontFamily: 'EB Garamond, serif',
                 fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
                 color: '#efe2c0',
-                lineHeight: 1.8,
+                lineHeight: 1.7,
                 textShadow: '0 0 10px rgba(239, 226, 192, 0.3)',
               }}
             >
-              {portfolio.experience.certifications.map((cert, i) => (
-                <div key={i} style={{ marginBottom: '0.75rem' }}>
-                  {cert}
+              {portfolio.experience.items.map((item, i) => (
+                <div key={i} style={{ marginBottom: '0.6rem' }}>
+                  • {item}
                 </div>
               ))}
             </motion.div>

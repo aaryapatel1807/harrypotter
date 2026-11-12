@@ -39,7 +39,7 @@ const WelcomeScene = ({ progress }: WelcomeSceneProps) => {
               letterSpacing: '0.05em',
             }}
           >
-            Welcome to the Castle of
+            Enter the Kingdom of
           </motion.div>
           <motion.div
             initial={{ filter: 'blur(16px)', y: 30, scale: 0.97 }}
