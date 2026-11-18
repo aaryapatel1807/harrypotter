@@ -7,8 +7,6 @@ interface ProjectsSceneProps {
 }
 
 const ProjectsScene = ({ progress, isMobile }: ProjectsSceneProps) => {
-  const isVisible = progress >= 0.648 && progress <= 0.8
-  
   const projectRanges = [
     { start: 0.648, end: 0.698 },
     { start: 0.7, end: 0.75 },

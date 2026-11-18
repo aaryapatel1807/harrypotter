@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import FilmCanvas from './components/FilmCanvas'
 import ProgressBar from './components/ProgressBar'
@@ -15,7 +15,6 @@ import ProjectsScene from './components/scenes/ProjectsScene'
 import AchievementsScene from './components/scenes/AchievementsScene'
 import ExperienceScene from './components/scenes/ExperienceScene'
 import ContactScene from './components/scenes/ContactScene'
-import { filmTimings } from './data/film'
 import './App.css'
 
 function App() {

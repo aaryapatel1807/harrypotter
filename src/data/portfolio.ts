@@ -18,7 +18,7 @@ export const portfolio = {
     degree: 'B.Tech in Computer Science Engineering',
     college: 'ITM SLS Baroda University, Vadodara',
     year: 'Currently in 3rd year',
-    scores: [],
+    scores: [] as { label: string; value: string }[],
     honours: 'Tech community member (SSIP) · Coursework: AI/ML, Deep Learning, DSA, DBMS, Networks'
   },
   
