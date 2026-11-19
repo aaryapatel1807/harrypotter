@@ -1,69 +1,64 @@
-import cv2
-import os
+#!/usr/bin/env python3
+"""Re-export the Harry Potter scroll-film frames from master.mp4.
+
+Pipeline (updated 19 Nov 2026 — the old version downscaled to 1280x720,
+which made the film look blurry on fullscreen/retina screens):
+  - source: master.mp4 (1920x1080, 24fps, 37.5s)
+  - sample to 15fps -> 563 frames (f0001..f0563), same timing as film.ts
+  - keep native 1920x1080 (no downscale), WebP quality 85
+  - mild unsharp mask (luma 0.35) — the AI-generated source is soft by
+    nature; this recovers crispness without halos
+  - poster.webp from the first frame, same treatment
+
+Requires ffmpeg with libwebp (ffmpeg -encoders | grep libwebp).
+Run from the repo root:  python3 export_frames.py
+"""
+import subprocess
+import sys
 from pathlib import Path
 
-# Create output directory
-output_dir = Path('public/film')
-output_dir.mkdir(parents=True, exist_ok=True)
+REPO = Path(__file__).resolve().parent
+MASTER = REPO / "master.mp4"
+OUT = REPO / "public" / "film"
 
-# Open the master video
-video_path = 'master.mp4'
-cap = cv2.VideoCapture(video_path)
+FRAMES = 563          # must match totalFrames in src/data/film.ts
+QUALITY = 85
+UNSHARP = "unsharp=5:5:0.35:5:5:0.0"
 
-# Get video properties
-fps = cap.get(cv2.CAP_PROP_FPS)
-total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-duration = total_frames / fps
 
-print(f"Master video: {fps:.2f} fps, {total_frames} frames, {duration:.2f} seconds")
+def run(cmd: list[str]) -> None:
+    print("+", " ".join(cmd))
+    subprocess.run(cmd, check=True)
 
-# We want 15fps output from 24fps input
-# So we take every 24/15 = 1.6 frames
-frame_interval = fps / 15.0
-frame_count = 0
-output_count = 0
-next_frame_to_capture = 0
 
-# First, create poster from first frame
-ret, first_frame = cap.read()
-if ret:
-    # Resize to 1280x720
-    resized = cv2.resize(first_frame, (1280, 720), interpolation=cv2.INTER_LANCZOS4)
-    poster_path = output_dir / 'poster.webp'
-    cv2.imwrite(str(poster_path), resized, [cv2.IMWRITE_WEBP_QUALITY, 80])
-    print(f"✓ Created poster.webp")
+def main() -> None:
+    if not MASTER.exists():
+        sys.exit(f"missing {MASTER}")
+    OUT.mkdir(parents=True, exist_ok=True)
 
-# Reset to beginning
-cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    run([
+        "ffmpeg", "-y", "-v", "error",
+        "-i", str(MASTER),
+        "-vf", f"fps=15,{UNSHARP}",
+        "-c:v", "libwebp", "-quality", str(QUALITY),
+        "-compression_level", "6",
+        str(OUT / "f%04d.webp"),
+    ])
+    run([
+        "ffmpeg", "-y", "-v", "error",
+        "-ss", "0", "-i", str(MASTER),
+        "-frames:v", "1",
+        "-vf", UNSHARP,
+        "-c:v", "libwebp", "-quality", str(QUALITY),
+        str(OUT / "poster.webp"),
+    ])
 
-# Export frames at 15fps
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-    
-    if frame_count >= next_frame_to_capture:
-        # Resize to 1280x720
-        resized = cv2.resize(frame, (1280, 720), interpolation=cv2.IMWRITE_WEBP_QUALITY)
-        
-        # Save as WebP with 4-digit padding
-        output_count += 1
-        output_path = output_dir / f'f{output_count:04d}.webp'
-        cv2.imwrite(str(output_path), resized, [cv2.IMWRITE_WEBP_QUALITY, 80])
-        
-        if output_count % 50 == 0:
-            print(f"Exported {output_count} frames...")
-        
-        next_frame_to_capture += frame_interval
-    
-    frame_count += 1
+    frames = sorted(OUT.glob("f*.webp"))
+    assert len(frames) == FRAMES, f"expected {FRAMES} frames, got {len(frames)}"
+    size_mb = sum(f.stat().st_size for f in OUT.glob("*.webp")) / (1024 * 1024)
+    print(f"\n✓ Exported {len(frames)} frames at 15fps as 1920x1080 WebP (quality {QUALITY})")
+    print(f"✓ Total size of public/film/: {size_mb:.2f} MB")
 
-cap.release()
 
-print(f"\n✓ Exported {output_count} frames at 15fps as 1280x720 WebP (quality 80)")
-print(f"✓ Total frames: {output_count}")
-
-# Calculate directory size
-total_size = sum(f.stat().st_size for f in output_dir.glob('*.webp'))
-size_mb = total_size / (1024 * 1024)
-print(f"✓ Total size of public/film/: {size_mb:.2f} MB ({total_size:,} bytes)")
+if __name__ == "__main__":
+    main()

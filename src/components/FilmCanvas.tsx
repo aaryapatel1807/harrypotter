@@ -9,6 +9,7 @@ const FilmCanvas = ({ progress }: FilmCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const framesRef = useRef<Map<number, HTMLImageElement>>(new Map())
   const [loadingState, setLoadingState] = useState<'loading' | 'ready'>('loading')
+  const [resizeTick, setResizeTick] = useState(0)
 
   const { totalFrames } = filmTimings
 
@@ -90,15 +91,17 @@ const FilmCanvas = ({ progress }: FilmCanvasProps) => {
     } else {
       drawFrame(ctx, canvas, frameImage)
     }
-  }, [progress, totalFrames, loadingState])
+  }, [progress, totalFrames, loadingState, resizeTick])
 
   const drawFrame = (
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement,
     img: HTMLImageElement
   ) => {
-    const canvasWidth = canvas.width
-    const canvasHeight = canvas.height
+    // Backing store is CSS size x DPR (capped at 2); lay out in CSS pixels
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const canvasWidth = canvas.width / dpr
+    const canvasHeight = canvas.height / dpr
     const imgAspect = img.width / img.height
     const canvasAspect = canvasWidth / canvasHeight
 
@@ -117,6 +120,7 @@ const FilmCanvas = ({ progress }: FilmCanvasProps) => {
       offsetY = 0
     }
 
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     ctx.imageSmoothingEnabled = true
     ctx.imageSmoothingQuality = 'high'
     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
@@ -129,14 +133,17 @@ const FilmCanvas = ({ progress }: FilmCanvasProps) => {
     }
   }
 
-  // Handle resize
+  // Handle resize — backing store at DPR (capped at 2) so retina screens
+  // don't upscale a CSS-pixel canvas, which softens the film
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.round(window.innerWidth * dpr)
+      canvas.height = Math.round(window.innerHeight * dpr)
+      setResizeTick((t) => t + 1)
     }
 
     handleResize()
